@@ -46,7 +46,7 @@ const applicationSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    resumeUsedUrl: {
+    niceToHaves: {
       type: String,
     },
     notes: {
