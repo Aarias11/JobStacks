@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [touched, setTouched] = useState(false);
 
   const router = useRouter();
 
@@ -16,16 +17,18 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:4000/api/users/login", {
-        email,
-        password,
-      },  
-      { withCredentials: true },
-    );
+      const res = await axios.post(
+        "http://localhost:4000/api/users/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       if (res.status === 200) {
         // 🎉 Login success
-        alert('Login Successful!')
+        alert("Login Successful!");
         router.push("/dashboard"); // or wherever
       }
     } catch (err: any) {
@@ -52,15 +55,21 @@ export default function Login() {
 
           {/* Input Form */}
           <form className="mt-8" onSubmit={handleLogin}>
-            <Input
+            <div className="mb-8">
+                <Input
               label="Email"
-              placeholder="joeschmoe@example.com"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              name="email"
-              autoComplete="email"
-              className="mb-5"
+              onBlur={() => setTouched(true)}
+              error={touched && !email.includes("@")}
+              helperText={
+                touched && !email.includes("@")
+                  ? "Please enter a valid email."
+                  : ""
+              }
             />
+            </div>
 
             <Input
               label="Password"
@@ -70,7 +79,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               name="password"
               autoComplete="current-password"
-              className="mb-5"
+              className="mb-8"
             />
             <div className="w-full mb-5 flex justify-between">
               <div className="flex gap-3 items-center">
