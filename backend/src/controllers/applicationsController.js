@@ -5,8 +5,34 @@ import Application from "../models/Application.js";
 export const getAllApplications = async (req, res, next) => {
   try {
     const userId = req.user._id;
-    const applications = await Application.find({ user: userId });
-    res.status(200).json(applications);
+    const { status, tag, search, page = 1, limit = 10, sort = '-createdAt' } = req.query;
+
+    const query = { user: userId };
+
+    if (status) query.status = status;
+    if (tag) query.tags = tag;
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { company: { $regex: search, $options: 'i' } },
+        { location: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const total = await Application.countDocuments(query);
+    const applications = await Application.find(query)
+      .sort(sort) // ✨ sorting
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    res.status(200).json({
+      total,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      totalPages: Math.ceil(total / limit),
+      applications,
+    });
   } catch (err) {
     next(err);
   }
@@ -22,7 +48,7 @@ export const createApplication = async (req, res, next) => {
       company,
       companyLogo,
       location,
-      noteToHaves,
+      niceToHaves,
       status = "saved", // fallback
       salary,
       techStack,

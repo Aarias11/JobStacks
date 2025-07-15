@@ -50,6 +50,12 @@ export const parseJobFromUrl = async (req, res, next) => {
     const { url } = req.body;
     const userId = req.user._id;
 
+    // ✅ Check for existing application
+    const existing = await Application.findOne({ user: userId, sourceUrl: url });
+    if (existing) {
+      return res.status(409).json({ message: "Application already exists." });
+    }
+
     // Run Python parser
     const parsedJobData = await runPythonParser(url);
 
