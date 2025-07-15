@@ -20,7 +20,8 @@ const applicationSchema = new mongoose.Schema(
       default: "",
     },
     location: {
-      type: String,
+      type: [String],
+      default: [],
     },
     sourceUrl: {
       type: String,

@@ -2,6 +2,7 @@ import { spawn } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import ParsedJob from '../models/ParsedJob.js';
+import Application from '../models/Application.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,15 +50,24 @@ export const parseJobFromUrl = async (req, res, next) => {
     const { url } = req.body;
     const userId = req.user._id;
 
+    // Run Python parser
     const parsedJobData = await runPythonParser(url);
 
+    // Save to ParsedJob (for record-keeping)
     const parsedJob = await ParsedJob.create({
       user: userId,
       sourceUrl: url || '',
       ...parsedJobData,
     });
 
-    res.status(201).json(parsedJob);
+    // Copy to Application (for active user interaction)
+    const application = await Application.create({
+      user: userId,
+      sourceUrl: url || '',
+      ...parsedJobData,
+    });
+
+    res.status(201).json(application);
   } catch (err) {
     console.error('Job parsing failed:', err);
     next(err);
