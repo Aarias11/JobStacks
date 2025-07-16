@@ -37,7 +37,7 @@ export default function Login() {
   };
 
   return (
-    <div className="w-full h-screen flex py-6 px-4">
+    <div className="w-full h-screen flex py-2 px-4">
       {/* Left Login Container */}
       <div className=" w-full lg:w-[50%] h-full">
         <img
