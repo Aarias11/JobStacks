@@ -5,6 +5,7 @@ import {
   File,
   Bookmark,
   Settings,
+  LogOut,
   LucideIcon,
 } from "lucide-react";
 
@@ -24,7 +25,10 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
     { label: "Saved Jobs", icon: Bookmark },
   ];
 
-  const bottomTabs: Tab[] = [{ label: "Settings", icon: Settings }];
+  const bottomTabs: Tab[] = [
+    { label: "Settings", icon: Settings },
+    { label: "Logout", icon: LogOut },
+  ];
 
   return (
     <section className="border border-[#272727] lg:block hidden py-2 px-4 h-full sticky top-0 left-0">
@@ -54,7 +58,17 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
           {bottomTabs.map((tab, index) => (
             <li
               key={index}
-              onClick={() => onTabSelect(tab.label)}
+              onClick={async () => {
+                if (tab.label === "Logout") {
+                  await fetch("/api/logout", {
+                    method: "POST",
+                    credentials: "include",
+                  });
+                  window.location.href = "/login";
+                } else {
+                  onTabSelect(tab.label);
+                }
+              }}
               className="flex gap-2 items-center hover:bg-surface p-2 hover:rounded-[10px] hover:cursor-pointer"
             >
               <tab.icon size={18} />
