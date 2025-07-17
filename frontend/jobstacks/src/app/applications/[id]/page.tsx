@@ -81,6 +81,14 @@ export default function ApplicationDetailPage() {
           </div>
         </section>
 
+        {/* Description */}
+        {job.description && (
+          <section className="border-t border-white/10 pt-10">
+            <h2 className="text-xl font-semibold text-white mb-4">Description</h2>
+            <p className="text-white whitespace-pre-line">{job.description}</p>
+          </section>
+        )}
+
         {/* Tech Stack */}
         <section className="border-t border-white/10 pt-10">
           <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
