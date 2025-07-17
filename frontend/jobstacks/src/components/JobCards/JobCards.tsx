@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from "next/link";
 import {
   MapPin,
   User,
@@ -34,11 +35,12 @@ export default function JobCards({ jobs }: JobCardsProps) {
   return (
     <div className="w-full h-full p-6">
       {jobs.map((job, index) => (
-        <div
+        <Link
           key={job._id}
+          href={`/applications/${job._id}`}
           className={`w-full h-[222px] ${
             index % 2 === 0 ? 'bg-surface' : 'bg-background'
-          } rounded-[12px] flex gap-4 px-[35px] py-[28px] mb-6`}
+          } rounded-[12px] flex gap-4 px-[35px] py-[28px] mb-6 hover:cursor-pointer`}
         >
           <img
             src={job.companyLogo || "https://logo.clearbit.com/default.com"}
@@ -91,7 +93,7 @@ export default function JobCards({ jobs }: JobCardsProps) {
               {new Date(job.createdAt).toLocaleDateString()}
             </span>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
