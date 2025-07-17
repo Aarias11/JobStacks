@@ -1,6 +1,6 @@
 import Button from "@/components/Button/Button";
 import Input from "@/components/Input/Input";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Modal from "@/components/Modal/Modal";
 import {
   Search,
@@ -18,6 +18,18 @@ export default function DashboardView() {
   const [jobUrl, setJobUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [jobs, setJobs] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredJobs = useMemo(() => {
+    return jobs.filter((job) => {
+      const search = searchTerm.toLowerCase();
+      return (
+        job.title?.toLowerCase().includes(search) ||
+        job.company?.toLowerCase().includes(search) ||
+        job.tags?.some((tag: string) => tag.toLowerCase().includes(search))
+      );
+    });
+  }, [jobs, searchTerm]);
 
     useEffect(() => {
   const fetchJobs = async () => {
@@ -49,6 +61,7 @@ export default function DashboardView() {
     });
 
     const data = await res.json();
+    setJobs((prev) => [data, ...prev]);
     console.log("Job parsed:", data);
     setJobUrl("");
   } catch (err) {
@@ -68,8 +81,11 @@ export default function DashboardView() {
             {/* Search and Add Application Button */}
         <div className="w-full p-6 flex gap-4">
         <div className="relative">
-            <Input className="bg-surface pl-14 text-[16px] h-[53px]"
-            placeholder="Search by company, title, or tag..."
+            <Input
+              className="bg-surface pl-14 text-[16px] h-[53px]"
+              placeholder="Search by company, title, or tag..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
         <Search className="absolute top-4 left-4" size={20} />
         </div>
@@ -91,7 +107,7 @@ export default function DashboardView() {
             </ul>
         </div>
         {/* Application Cards Container */}
-        <JobCards jobs={jobs} />
+        <JobCards jobs={filteredJobs} />
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
           <div className="space-y-6">
             <div className="space-y-2">
