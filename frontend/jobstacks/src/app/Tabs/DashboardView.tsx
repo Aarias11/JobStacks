@@ -73,7 +73,7 @@ export default function DashboardView() {
 
   return (
     <div className="w-full flex h-full ">
-      <section className="w-[800px] overflow-y-auto  h-screen">
+      <section className="w-full overflow-y-auto  h-screen">
         <div className="h-[75px]  sticky top-0 bg-background z-10">
           <h3 className="text-[28px] font-semibold p-6">Dashboard</h3>
         </div>
@@ -188,7 +188,7 @@ export default function DashboardView() {
           </div>
         </Modal>
       </section>
-      <section className="border-l border-[#272727] w-[400px] overflow-y-auto h-screen">
+      {/* <section className="border-l border-[#272727] w-[400px] overflow-y-auto h-screen">
         <div className="h-auto sticky top-0 bg-background z-10">
           <h3 className="text-[28px] font-semibold p-6">
             Companies You've Applied To
@@ -203,7 +203,7 @@ export default function DashboardView() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
       {loading && (
         <motion.div
           initial={{ opacity: 0 }}

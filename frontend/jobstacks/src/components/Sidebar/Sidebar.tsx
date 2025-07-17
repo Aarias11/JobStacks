@@ -99,7 +99,10 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
 
         {/* Profile */}
         <div className="flex gap-3 border-t border-[#272727] pt-4 ">
-          <div className="w-10 h-10 rounded-full bg-gray-500"></div>
+          {/* Avatar */}
+          <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-medium">
+            {user.name ? user.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase() : "?"}
+          </div>
           <div>
             <span className="text-[16px] text-text-primary flex">{user.name || "Loading..."}</span>
             <span className="text-[14px] text-text-secondary">
