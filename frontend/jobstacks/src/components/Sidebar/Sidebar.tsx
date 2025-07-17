@@ -1,5 +1,6 @@
 'use client';
 import React from "react";
+import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   File,
@@ -19,6 +20,25 @@ type SidebarProps = {
 };
 
 export default function Sidebar({ onTabSelect }: SidebarProps) {
+  const [user, setUser] = useState({ name: "", email: "" });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/api/users/me", {
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser({ name: data.name, email: data.email });
+        }
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
   const mainTabs: Tab[] = [
     { label: "Dashboard", icon: LayoutDashboard },
     { label: "Applications", icon: File },
@@ -81,9 +101,9 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
         <div className="flex gap-3 border-t border-[#272727] pt-4 ">
           <div className="w-10 h-10 rounded-full bg-gray-500"></div>
           <div>
-            <span className="text-[16px] text-text-primary flex">Alan Arias</span>
+            <span className="text-[16px] text-text-primary flex">{user.name || "Loading..."}</span>
             <span className="text-[14px] text-text-secondary">
-              alan.arias11@gmail.com
+              {user.email || "Fetching user..."}
             </span>
           </div>
         </div>
