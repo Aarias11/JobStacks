@@ -145,6 +145,12 @@ export default function ApplicationsView() {
           </div>
         </div>
         <JobCards jobs={jobs} variant="grid" />
+        {jobs.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-[300px] text-center text-muted-foreground space-y-4">
+            <p className="text-xl font-semibold">No applications found</p>
+            <p className="text-sm">You haven't added any job applications yet. Try saving or applying to a job to see it here.</p>
+          </div>
+        )}
       </section>
     </div>
   );

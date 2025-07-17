@@ -7,10 +7,14 @@ import {
   Plus,
   MapPin,
   User,
-  BadgeDollarSign
+  BadgeDollarSign,
+  Briefcase,
+  Building2,
+  ListChecks
 } from "lucide-react";
 import JobCards from "@/components/JobCards/JobCards";
 import { motion } from "framer-motion";
+import StatCard from "@/components/StatCard/StatCard";
 
 export default function DashboardView() {
   const [showModal, setShowModal] = useState(false);
@@ -79,7 +83,7 @@ export default function DashboardView() {
         </div>
         {/* Content */}
             {/* Search and Add Application Button */}
-        <div className="w-full p-6 flex gap-4">
+        <div className="w-full p-6 flex justify-between gap-4">
         <div className="relative ">
             <Input
               className="bg-surface pl-14 text-[16px] h-[53px]"
@@ -89,33 +93,20 @@ export default function DashboardView() {
             />
         <Search className="absolute top-4 left-4" size={20} />
         </div>
-        <Button className="h-[53px] flex gap-4" onClick={() => setShowModal(true)}>
+        <Button className="w-[200px] h-[52px] flex gap-4" onClick={() => setShowModal(true)}>
             <Plus />
             Add Application
         </Button>
         </div>
         {/* Stats Cards */}
         <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-6">
-          <div className="bg-surface p-4 rounded-xl shadow-sm border border-[#2a2a2a]">
-            <h4 className="text-sm text-gray-400">Total Applications</h4>
-            <p className="text-xl font-bold text-white mt-1">{jobs.length}</p>
-          </div>
-          <div className="bg-surface p-4 rounded-xl shadow-sm border border-[#2a2a2a]">
-            <h4 className="text-sm text-gray-400">Unique Companies</h4>
-            <p className="text-xl font-bold text-white mt-1">{[...new Set(jobs.map(j => j.company))].length}</p>
-          </div>
-          <div className="bg-surface p-4 rounded-xl shadow-sm border border-[#2a2a2a]">
-            <h4 className="text-sm text-gray-400">Locations</h4>
-            <p className="text-xl font-bold text-white mt-1">{[...new Set(jobs.flatMap(j => j.location || []))].length}</p>
-          </div>
-          <div className="bg-surface p-4 rounded-xl shadow-sm border border-[#2a2a2a]">
-            <h4 className="text-sm text-gray-400">Status Types</h4>
-            <p className="text-xl font-bold text-white mt-1">{[...new Set(jobs.map(j => j.status))].length}</p>
-          </div>
+          <StatCard icon={Briefcase} label="Total Applications" value={jobs.length} />
+          <StatCard icon={Building2} label="Unique Companies" value={[...new Set(jobs.map(j => j.company))].length} />
+          <StatCard icon={MapPin} label="Locations" value={[...new Set(jobs.flatMap(j => j.location || []))].length} />
+          <StatCard icon={ListChecks} label="Status Types" value={[...new Set(jobs.map(j => j.status))].length} />
         </div>
         {/* Application Cards Container */}
         <div className="px-6 mt-8 mb-4">
-          <h2 className="text-lg font-semibold text-white mb-4">Applications</h2>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setJobs(jobs.slice().reverse())}
@@ -161,7 +152,20 @@ export default function DashboardView() {
             </button>
           </div>
         </div>
-        <JobCards jobs={filteredJobs} />
+        {filteredJobs.length > 0 ? (
+          <>
+            <h2 className="text-lg font-semibold text-white mt-10 px-6">Applications</h2>
+            <JobCards
+              jobs={filteredJobs}
+              onStatusClick={(jobId) => console.log("Change status for", jobId)}
+            />
+          </>
+        ) : (
+          <div className="w-full text-center py-20 text-muted-foreground">
+            <p className="text-lg font-medium mb-2">No applications found</p>
+            <p className="text-sm">Try adding a new application or adjust your filters/search.</p>
+          </div>
+        )}
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
           <div className="space-y-6">
             <div className="space-y-2">
