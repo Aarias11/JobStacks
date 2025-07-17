@@ -42,7 +42,7 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
   const mainTabs: Tab[] = [
     { label: "Dashboard", icon: LayoutDashboard },
     { label: "Applications", icon: File },
-    { label: "Saved Jobs", icon: Bookmark },
+    // { label: "Saved Jobs", icon: Bookmark },
   ];
 
   const bottomTabs: Tab[] = [
