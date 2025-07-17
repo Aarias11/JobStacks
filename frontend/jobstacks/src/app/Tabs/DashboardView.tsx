@@ -94,17 +94,24 @@ export default function DashboardView() {
             Add Application
         </Button>
         </div>
-        {/* Filter */}
-        <div className="w-full h-[100px] p-6">
-            <ul className="flex justify-between items-center ">
-                <li className="px-3 py-2 bg-primary rounded-full">All Applications</li>
-                <li>Role Type</li>
-                <li>Location</li>
-                <li>Tag</li>
-                <li>Salary</li>
-                <li>Status</li>
-                <li>Date</li>
-            </ul>
+        {/* Stats Cards */}
+        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-6">
+          <div className="bg-surface p-4 rounded-xl shadow-sm border border-[#2a2a2a]">
+            <h4 className="text-sm text-gray-400">Total Applications</h4>
+            <p className="text-xl font-bold text-white mt-1">{jobs.length}</p>
+          </div>
+          <div className="bg-surface p-4 rounded-xl shadow-sm border border-[#2a2a2a]">
+            <h4 className="text-sm text-gray-400">Unique Companies</h4>
+            <p className="text-xl font-bold text-white mt-1">{[...new Set(jobs.map(j => j.company))].length}</p>
+          </div>
+          <div className="bg-surface p-4 rounded-xl shadow-sm border border-[#2a2a2a]">
+            <h4 className="text-sm text-gray-400">Locations</h4>
+            <p className="text-xl font-bold text-white mt-1">{[...new Set(jobs.flatMap(j => j.location || []))].length}</p>
+          </div>
+          <div className="bg-surface p-4 rounded-xl shadow-sm border border-[#2a2a2a]">
+            <h4 className="text-sm text-gray-400">Status Types</h4>
+            <p className="text-xl font-bold text-white mt-1">{[...new Set(jobs.map(j => j.status))].length}</p>
+          </div>
         </div>
         {/* Application Cards Container */}
         <JobCards jobs={filteredJobs} />
