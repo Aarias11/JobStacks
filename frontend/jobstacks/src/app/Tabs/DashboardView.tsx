@@ -80,7 +80,7 @@ export default function DashboardView() {
         {/* Content */}
             {/* Search and Add Application Button */}
         <div className="w-full p-6 flex gap-4">
-        <div className="relative">
+        <div className="relative ">
             <Input
               className="bg-surface pl-14 text-[16px] h-[53px]"
               placeholder="Search by company, title, or tag..."
@@ -114,6 +114,53 @@ export default function DashboardView() {
           </div>
         </div>
         {/* Application Cards Container */}
+        <div className="px-6 mt-8 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4">Applications</h2>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setJobs(jobs.slice().reverse())}
+              className="px-4 py-2 rounded-full text-sm bg-[#1E1E1E] border border-[#333] text-white hover:bg-[#2a2a2a] transition"
+            >
+              Sort by Date
+            </button>
+            <button
+              onClick={() =>
+                setJobs(jobs.slice().sort((a, b) => a.company.localeCompare(b.company)))
+              }
+              className="px-4 py-2 rounded-full text-sm bg-[#1E1E1E] border border-[#333] text-white hover:bg-[#2a2a2a] transition"
+            >
+              Sort by Company
+            </button>
+            <button
+              onClick={() =>
+                setJobs(jobs.slice().sort((a, b) => (a.location?.[0] || "").localeCompare(b.location?.[0] || "")))
+              }
+              className="px-4 py-2 rounded-full text-sm bg-[#1E1E1E] border border-[#333] text-white hover:bg-[#2a2a2a] transition"
+            >
+              Sort by Location
+            </button>
+            <button
+              onClick={() =>
+                setJobs(jobs.slice().sort((a, b) => a.status.localeCompare(b.status)))
+              }
+              className="px-4 py-2 rounded-full text-sm bg-[#1E1E1E] border border-[#333] text-white hover:bg-[#2a2a2a] transition"
+            >
+              Sort by Status
+            </button>
+            <button
+              onClick={() =>
+                setJobs(jobs.slice().sort((a, b) => {
+                  const aSalary = parseInt((a.salary || "").replace(/[^0-9]/g, ""), 10);
+                  const bSalary = parseInt((b.salary || "").replace(/[^0-9]/g, ""), 10);
+                  return bSalary - aSalary;
+                }))
+              }
+              className="px-4 py-2 rounded-full text-sm bg-[#1E1E1E] border border-[#333] text-white hover:bg-[#2a2a2a] transition"
+            >
+              Sort by Salary
+            </button>
+          </div>
+        </div>
         <JobCards jobs={filteredJobs} />
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
           <div className="space-y-6">

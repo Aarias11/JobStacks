@@ -13,13 +13,12 @@ import {
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { ArcElement } from "chart.js";
+import { Files, Bookmark, Send, Mic } from "lucide-react";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 export default function ApplicationsView() {
   const [loading, setLoading] = useState(false);
   const [jobs, setJobs] = useState<any[]>([]);
-
-
 
   
    useEffect(() => {
@@ -39,193 +38,53 @@ export default function ApplicationsView() {
     fetchJobs();
   }, []);
 
+  const total = jobs.length;
+  const savedCount = jobs.filter(j => j.status === 'saved').length;
+  const appliedCount = jobs.filter(j => j.status === 'applied').length;
+  const interviewCount = jobs.filter(j => j.status === 'interview').length;
+
+  const savedPercentage = total ? (savedCount / total) * 100 : 0;
+  const appliedPercentage = total ? (appliedCount / total) * 100 : 0;
+  const interviewPercentage = total ? (interviewCount / total) * 100 : 0;
+
   return (
     <div className="w-full flex h-full">
       <section className="w-full overflow-y-auto h-screen">
         <div className="h-[75px] sticky top-0 bg-background z-10">
           <h3 className="text-[28px] font-semibold p-6">Your Applications</h3>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-6 py-4">
-          <div className="bg-gradient-to-br from-[#1e1e1e] to-[#2b2b2b] p-5 rounded-xl border border-neutral-800 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <p className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Total</p>
-            <div className="flex items-center justify-between">
-              <p className="text-2xl font-bold text-white">{jobs.length}</p>
-              <div className="w-14 h-14 rounded-full bg-neutral-900 p-1">
-                <Doughnut
-                  data={{
-                    labels: ["Filled", "Remaining"],
-                    datasets: [
-                      {
-                        data: [jobs.length, Math.max(0, 50 - jobs.length)],
-                        backgroundColor: ["#3B82F6", "#E5E7EB"],
-                        borderWidth: 0,
-                        circumference: 360,
-                        rotation: -90,
-                      },
-                    ],
-                  }}
-                  options={{ 
-                    cutout: "80%", 
-                    plugins: { 
-                      legend: { display: false },
-                      title: {
-                        display: true,
-                        text: 'Total',
-                        position: 'center',
-                        color: '#fff',
-                        font: {
-                          size: 16,
-                          weight: 'bold',
-                        },
-                      },
-                      tooltip: { enabled: false }
-                    },
-                    animation: {
-                      animateRotate: true,
-                      animateScale: false
-                    }
-                  }}
-                />
-              </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-6 py-4">
+          <div className="bg-gradient-to-br from-[#1e1e1e] to-[#2b2b2b] p-6 rounded-2xl border border-neutral-800 shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Files size={18} className="text-[#5895FF]" />
+              <h4 className="uppercase text-sm tracking-wide text-neutral-400 font-medium">Total</h4>
             </div>
+            <p className="text-4xl font-extrabold text-white">{jobs.length}</p>
+            <p className="text-sm text-neutral-500">All job applications collected so far</p>
           </div>
-          <div className="bg-gradient-to-br from-[#1e1e1e] to-[#2b2b2b] p-5 rounded-xl border border-neutral-800 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <p className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Saved</p>
-            <div className="flex items-center justify-between">
-              <p className="text-2xl font-bold text-white">{jobs.filter(j => j.status === 'saved').length}</p>
-              <div className="w-14 h-14 rounded-full bg-neutral-900 p-1">
-                <Doughnut
-                  data={{
-                    labels: ["Saved", "Other"],
-                    datasets: [
-                      {
-                        data: [
-                          jobs.filter(j => j.status === 'saved').length,
-                          Math.max(0, jobs.length - jobs.filter(j => j.status === 'saved').length)
-                        ],
-                        backgroundColor: ["#F59E42", "#E5E7EB"],
-                        borderWidth: 0,
-                        circumference: 360,
-                        rotation: -90,
-                      },
-                    ],
-                  }}
-                  options={{ 
-                    cutout: "80%", 
-                    plugins: { 
-                      legend: { display: false },
-                      title: {
-                        display: true,
-                        text: 'Saved',
-                        position: 'center',
-                        color: '#fff',
-                        font: {
-                          size: 16,
-                          weight: 'bold',
-                        },
-                      },
-                      tooltip: { enabled: false }
-                    },
-                    animation: {
-                      animateRotate: true,
-                      animateScale: false
-                    }
-                  }}
-                />
-              </div>
+          <div className="bg-gradient-to-br from-[#1e1e1e] to-[#2b2b2b] p-6 rounded-2xl border border-neutral-800 shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Bookmark size={18} className="text-[#5895FF]" />
+              <h4 className="uppercase text-sm tracking-wide text-neutral-400 font-medium">Saved</h4>
             </div>
+            <p className="text-4xl font-extrabold text-white">{savedCount}</p>
+            <p className="text-sm text-neutral-500">Jobs you have saved for later</p>
           </div>
-          <div className="bg-gradient-to-br from-[#1e1e1e] to-[#2b2b2b] p-5 rounded-xl border border-neutral-800 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <p className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Applied</p>
-            <div className="flex items-center justify-between">
-              <p className="text-2xl font-bold text-white">{jobs.filter(j => j.status === 'applied').length}</p>
-              <div className="w-14 h-14 rounded-full bg-neutral-900 p-1">
-                <Doughnut
-                  data={{
-                    labels: ["Applied", "Other"],
-                    datasets: [
-                      {
-                        data: [
-                          jobs.filter(j => j.status === 'applied').length,
-                          Math.max(0, jobs.length - jobs.filter(j => j.status === 'applied').length)
-                        ],
-                        backgroundColor: ["#10B981", "#E5E7EB"],
-                        borderWidth: 0,
-                        circumference: 360,
-                        rotation: -90,
-                      },
-                    ],
-                  }}
-                  options={{ 
-                    cutout: "80%", 
-                    plugins: { 
-                      legend: { display: false },
-                      title: {
-                        display: true,
-                        text: 'Applied',
-                        position: 'center',
-                        color: '#fff',
-                        font: {
-                          size: 16,
-                          weight: 'bold',
-                        },
-                      },
-                      tooltip: { enabled: false }
-                    },
-                    animation: {
-                      animateRotate: true,
-                      animateScale: false
-                    }
-                  }}
-                />
-              </div>
+          <div className="bg-gradient-to-br from-[#1e1e1e] to-[#2b2b2b] p-6 rounded-2xl border border-neutral-800 shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Send size={18} className="text-[#5895FF]" />
+              <h4 className="uppercase text-sm tracking-wide text-neutral-400 font-medium">Applied</h4>
             </div>
+            <p className="text-4xl font-extrabold text-white">{appliedCount}</p>
+            <p className="text-sm text-neutral-500">Jobs you have applied to</p>
           </div>
-          <div className="bg-gradient-to-br from-[#1e1e1e] to-[#2b2b2b] p-5 rounded-xl border border-neutral-800 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <p className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Interviewing</p>
-            <div className="flex items-center justify-between">
-              <p className="text-2xl font-bold text-white">{jobs.filter(j => j.status === 'interview').length}</p>
-              <div className="w-14 h-14 rounded-full bg-neutral-900 p-1">
-                <Doughnut
-                  data={{
-                    labels: ["Interviewing", "Other"],
-                    datasets: [
-                      {
-                        data: [
-                          jobs.filter(j => j.status === 'interview').length,
-                          Math.max(0, jobs.length - jobs.filter(j => j.status === 'interview').length)
-                        ],
-                        backgroundColor: ["#6366F1", "#E5E7EB"],
-                        borderWidth: 0,
-                        circumference: 360,
-                        rotation: -90,
-                      },
-                    ],
-                  }}
-                  options={{ 
-                    cutout: "80%", 
-                    plugins: { 
-                      legend: { display: false },
-                      title: {
-                        display: true,
-                        text: 'Interviewing',
-                        position: 'center',
-                        color: '#fff',
-                        font: {
-                          size: 16,
-                          weight: 'bold',
-                        },
-                      },
-                      tooltip: { enabled: false }
-                    },
-                    animation: {
-                      animateRotate: true,
-                      animateScale: false
-                    }
-                  }}
-                />
-              </div>
+          <div className="bg-gradient-to-br from-[#1e1e1e] to-[#2b2b2b] p-6 rounded-2xl border border-neutral-800 shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Mic size={18} className="text-[#5895FF]" />
+              <h4 className="uppercase text-sm tracking-wide text-neutral-400 font-medium">Interviewing</h4>
             </div>
+            <p className="text-4xl font-extrabold text-white">{interviewCount}</p>
+            <p className="text-sm text-neutral-500">Jobs where you have interviews</p>
           </div>
         </div>
         <div className="px-6 pt-4">
@@ -237,21 +96,21 @@ export default function ApplicationsView() {
                 datasets: [
                   {
                     label: "Saved",
-                    data: [jobs.filter((j) => j.status === "saved").length],
+                    data: [savedCount],
                     backgroundColor: "#F59E42",
                     stack: 'Stack 0',
                     barThickness: 30,
                   },
                   {
                     label: "Applied",
-                    data: [jobs.filter((j) => j.status === "applied").length],
+                    data: [appliedCount],
                     backgroundColor: "#10B981",
                     stack: 'Stack 0',
                     barThickness: 30,
                   },
                   {
                     label: "Interviewing",
-                    data: [jobs.filter((j) => j.status === "interview").length],
+                    data: [interviewCount],
                     backgroundColor: "#6366F1",
                     stack: 'Stack 0',
                     barThickness: 30,

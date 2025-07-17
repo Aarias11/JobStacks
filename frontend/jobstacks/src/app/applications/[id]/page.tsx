@@ -85,7 +85,7 @@ export default function ApplicationDetailPage() {
         {job.description && (
           <section className="border-t border-white/10 pt-10">
             <h2 className="text-xl font-semibold text-white mb-4">Description</h2>
-            <p className="text-white whitespace-pre-line">{job.description}</p>
+            <p className="text-text-secondary whitespace-pre-line">{job.description}</p>
           </section>
         )}
 
@@ -136,7 +136,7 @@ export default function ApplicationDetailPage() {
         {Array.isArray(job.responsibilities) && job.responsibilities.length > 0 && (
           <section className="border-t border-white/10 pt-10">
             <h2 className="text-xl font-semibold text-white mb-4">Responsibilities</h2>
-            <ul className="list-disc pl-6 space-y-2 text-white">
+            <ul className="text-text-secondary list-disc pl-6 space-y-2 ">
               {job.responsibilities.map((item: string, index: number) => (
                 <li key={index}>{item}</li>
               ))}
@@ -148,7 +148,7 @@ export default function ApplicationDetailPage() {
         {Array.isArray(job.requirements) && job.requirements.length > 0 && (
           <section className="border-t border-white/10 pt-10">
             <h2 className="text-xl font-semibold text-white mb-4">Requirements</h2>
-            <ul className="list-disc pl-6 space-y-2 text-white">
+            <ul className="text-text-secondary list-disc pl-6 space-y-2">
               {job.requirements.map((item: string, index: number) => (
                 <li key={index}>{item}</li>
               ))}
