@@ -22,6 +22,15 @@ type JobCardsProps = {
 };
 
 export default function JobCards({ jobs }: JobCardsProps) {
+  function getTechIconUrl(name: string) {
+    const normalized = name
+      .toLowerCase()
+      .replace(/\+/g, "plus")
+      .replace(/#/g, "sharp")
+      .replace(/\s+/g, "");
+    return `/tech-icons/${normalized}.svg`;
+  }
+
   return (
     <div className="w-full h-full p-6">
       {jobs.map((job, index) => (
@@ -58,7 +67,17 @@ export default function JobCards({ jobs }: JobCardsProps) {
             </div>
             <div className="flex gap-2 mt-4 text-[14px] flex-wrap">
               {job.techStack.slice(0, 4).map((tech, idx) => (
-                <span key={idx} className="px-4 py-1 bg-background rounded-xl">
+                <span key={idx} className={`px-3 py-1 ${
+                  index % 2 === 0 ? 'bg-background' : 'bg-surface'
+                } rounded-xl flex items-center gap-2`}>
+                  <img
+                    src={getTechIconUrl(tech)}
+                    alt={tech}
+                    className="w-4 h-4"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "/tech-icons/default.svg";
+                    }}
+                  />
                   {tech}
                 </span>
               ))}
