@@ -48,7 +48,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         >
           <motion.div
             className="bg-background rounded-2xl shadow-xl p-6 w-[800px] h-[500px] relative"
-            variants={modal}
+            
             initial="hidden"
             animate="visible"
             exit="exit"
