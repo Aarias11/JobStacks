@@ -12,8 +12,13 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://job-stacks.vercel.app'
+];
+
 app.use(cors({
-  origin: 'http://localhost:3000', // your frontend
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(cookieParser());
