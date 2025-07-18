@@ -23,8 +23,18 @@ def get_visible_text(url):
         page.goto(url, timeout=60000)
         page.wait_for_timeout(5000)
         text_content = page.evaluate("() => document.body.innerText")
+        company_website = page.evaluate("""() => {
+            const links = Array.from(document.querySelectorAll('a'));
+            for (let link of links) {
+                const href = link.href;
+                if (href && href.includes('http') && !href.includes('linkedin.com') && !href.includes('glassdoor.com')) {
+                    try { return new URL(href).hostname; } catch (e) {}
+                }
+            }
+            return '';
+        }""")
         browser.close()
-        return text_content
+        return {"text": text_content, "companyWebsite": company_website}
 
 def parse_with_openai(job_text):
     prompt = f"""
@@ -32,14 +42,14 @@ You're an AI job parser. Based on the job page text below, extract and return th
 
 - title
 - company
+- description (include all general descriptive text blocks such as 'Description', 'The Role', 'About Us', and any introductory text; include exact original phrasing, not summaries)
 - location
 - salary
-- techStack (list of keywords)
-- requirements (list)
-- responsibilities (list)
-- description (plain text)
+- techStack (list of relevant technologies mentioned)
+- requirements (list of skills or qualifications)
+- responsibilities (list of duties or tasks)
 
-Do not return anything else. Use best judgment to fill missing fields.
+Be precise and extract the exact original phrasing used in the job description. Do not summarize. Only return valid JSON.
 
 Job Page Text:
 \"\"\"
@@ -56,7 +66,9 @@ Job Page Text:
     return response['choices'][0]['message']['content']
 
 if __name__ == "__main__":
-    job_text = get_visible_text(job_url)
+    result = get_visible_text(job_url)
+    job_text = result["text"]
+    company_website = result["companyWebsite"]
     parsed_output = parse_with_openai(job_text)
 
     if len(sys.argv) > 1:
@@ -71,6 +83,8 @@ if __name__ == "__main__":
 
         try:
             parsed = json.loads(clean_json)
+            parsed["companyWebsite"] = company_website
+            parsed["companyLogo"] = f"https://logo.clearbit.com/{company_website}" if company_website else ""
             print(json.dumps(parsed))  # ✅ Clean JSON only to stdout
         except json.JSONDecodeError as e:
             print(f"Error: JSON decode failed - {e}", file=sys.stderr)

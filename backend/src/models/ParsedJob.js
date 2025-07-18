@@ -41,6 +41,10 @@ const parsedJobSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    description: {
+      type: [String],
+      default: [],
+    },
     requirements: {
       type: [String],
       default: [],

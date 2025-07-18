@@ -1,4 +1,4 @@
-import User from "../models/User";
+import User from "../models/User.js";
 
 // @desc    Get current user's profile
 // @route   GET /api/users/me

@@ -5,7 +5,7 @@ import {
     deleteUserAccount
  } from '../controllers/userController.js'
 
-import requireAuth from '../middleware/requireAuth';
+import requireAuth from '../middleware/requireAuth.js';
 
 const router = express.Router();
 

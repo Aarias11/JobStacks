@@ -5,7 +5,14 @@ import Application from "../models/Application.js";
 export const getAllApplications = async (req, res, next) => {
   try {
     const userId = req.user._id;
-    const { status, tag, search, page = 1, limit = 10, sort = '-createdAt' } = req.query;
+    const {
+      status,
+      tag,
+      search,
+      page = 1,
+      limit = 10,
+      sort = "-createdAt",
+    } = req.query;
 
     const query = { user: userId };
 
@@ -13,9 +20,9 @@ export const getAllApplications = async (req, res, next) => {
     if (tag) query.tags = tag;
     if (search) {
       query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { company: { $regex: search, $options: 'i' } },
-        { location: { $regex: search, $options: 'i' } },
+        { title: { $regex: search, $options: "i" } },
+        { company: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -52,6 +59,7 @@ export const createApplication = async (req, res, next) => {
       status = "saved", // fallback
       salary,
       techStack,
+      description,
       requirements,
       responsibilities,
       notes,
@@ -69,6 +77,7 @@ export const createApplication = async (req, res, next) => {
       status,
       salary,
       techStack,
+      description,
       requirements,
       responsibilities,
       notes,
@@ -125,6 +134,7 @@ export const updateApplication = async (req, res, next) => {
       status,
       salary,
       techStack,
+      description,
       requirements,
       responsibilities,
       notes,
@@ -152,6 +162,7 @@ export const updateApplication = async (req, res, next) => {
         status,
         salary,
         techStack,
+        description,
         requirements,
         responsibilities,
         notes,
@@ -178,10 +189,15 @@ export const deleteApplication = async (req, res, next) => {
     const { id } = req.params;
     const userId = req.user._id;
 
-    const deleted = await Application.findOneAndDelete({ _id: id, user: userId });
+    const deleted = await Application.findOneAndDelete({
+      _id: id,
+      user: userId,
+    });
 
     if (!deleted) {
-      return res.status(404).json({ error: "Application not found or unauthorized" });
+      return res
+        .status(404)
+        .json({ error: "Application not found or unauthorized" });
     }
 
     res.status(200).json({ message: "Application successfully deleted!" });

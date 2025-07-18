@@ -1,10 +1,9 @@
 import User from "../models/User.js";
-import { generateAccessToken, generateRefreshToken } from "../utils/generateToken.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../utils/generateToken.js";
 import jwt from "jsonwebtoken";
-
-
-// REMEMBER TO TURN COOKIED BACK ON
-
 
 // @desc   Register a new user
 // @route  POST /api/users/register
@@ -27,12 +26,23 @@ export const registerUser = async (req, res, next) => {
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
+    // ✅ Set cookies
+    res.cookie("token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
+
     res.status(201).json({
       message: "User registered successfully",
-      token: {
-        access: accessToken,
-        refresh: refreshToken,
-      },
       user: {
         id: user._id,
         name: user.name,
@@ -62,12 +72,23 @@ export const loginUser = async (req, res, next) => {
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
+    // ✅ Set cookies
+    res.cookie("token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({
       message: "Login successful",
-      token: {
-        access: accessToken,
-        refresh: refreshToken,
-      },
       user: {
         id: user._id,
         name: user.name,
@@ -81,7 +102,6 @@ export const loginUser = async (req, res, next) => {
 
 // @desc   Get current logged-in user
 // @route  GET /api/users/me
-// @access Private
 export const getCurrentUser = async (req, res, next) => {
   try {
     const user = req.user;
@@ -117,10 +137,17 @@ export const refreshAccessToken = (req, res) => {
 
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-
     const newAccessToken = generateAccessToken(decoded.id);
 
-    res.status(200).json({ token: newAccessToken });
+    // ✅ Replace old token cookie
+    res.cookie("token", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({ message: "Token refreshed" });
   } catch (err) {
     res.status(403).json({ error: "Invalid or expired refresh token" });
   }
