@@ -2,19 +2,17 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 const requireAuth = async (req, res, next) => {
-  let token;
+  let token = null;
 
-  const authHeader = req.headers.authorization;
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    token = authHeader.split(' ')[1];
-  }
-
-  if (!token && req.cookies?.token) {
+  // Prefer cookie token over Authorization header
+  if (req.cookies && req.cookies.token) {
     token = req.cookies.token;
+  } else if (req.headers.authorization?.startsWith('Bearer ')) {
+    token = req.headers.authorization.split(' ')[1];
   }
 
   if (!token) {
-    return res.status(401).json({ error: 'Authorization token required' });
+    return res.status(401).json({ error: 'Authorization token missing' });
   }
 
   try {
@@ -22,13 +20,13 @@ const requireAuth = async (req, res, next) => {
     req.user = await User.findById(decoded.id).select('-passwordHash');
 
     if (!req.user) {
-      return res.status(401).json({ error: 'User not found' });
+      return res.status(401).json({ error: 'User associated with token not found' });
     }
 
     next();
   } catch (err) {
-    console.error(err);
-    res.status(401).json({ error: 'Token is not valid' });
+    console.error('Auth error:', err);
+    return res.status(401).json({ error: 'Invalid or expired token' });
   }
 };
 
