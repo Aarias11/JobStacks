@@ -1,11 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import connectDB from '../backend/src/config/db.js';
-import applicationRoutes from '../backend/src/routes/applicationRoutes.js'
-import authRoutes from '../backend/src/routes/authRoutes.js'
-import aiRoutes from '../backend/src/routes/aiRoutes.js'
-import userRoutes from '../backend/src/routes/userRoutes.js'
+import connectDB from './src/config/db.js';
+import applicationRoutes from './src/routes/applicationRoutes.js';
+import authRoutes from './src/routes/authRoutes.js';
+import aiRoutes from './src/routes/aiRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
 import cookieParser from 'cookie-parser';
 
 dotenv.config();
