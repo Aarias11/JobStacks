@@ -98,7 +98,7 @@ export default function ApplicationDetailPage() {
                   className="flex items-center gap-2 bg-surface px-4 py-2 rounded-md min-w-[120px] shadow-sm"
                 >
                   <img
-                    src={`/tech-icons/${tech.toLowerCase().replace(/\s+/g, "")}.svg`}
+                    src={`/tech-icons/${tech.replace(/\s+/g, "")}.svg`}
                     alt={tech}
                     className="w-5 h-5"
                     onError={(e) => {
