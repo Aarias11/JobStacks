@@ -31,6 +31,7 @@ export const registerUser = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
+      domain: ".alanarias.com",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -38,6 +39,7 @@ export const registerUser = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
+      domain: ".alanarias.com",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
@@ -77,6 +79,7 @@ export const loginUser = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
+      domain: ".alanarias.com",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -84,6 +87,7 @@ export const loginUser = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
+      domain: ".alanarias.com",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
@@ -144,6 +148,7 @@ export const refreshAccessToken = (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
+      domain: ".alanarias.com",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
