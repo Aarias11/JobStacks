@@ -12,7 +12,7 @@ const runPythonParser = (url) => {
     const scriptPath = path.join(__dirname, '../../scripts/testScraper.py');
     console.log('🛠️ Using scriptPath:', scriptPath);
 
-    const child = spawn('/Library/Frameworks/Python.framework/Versions/3.11/bin/python3', [scriptPath, url], {
+    const child = spawn('python3', [scriptPath, url], {
       env: { ...process.env },
     });
 
