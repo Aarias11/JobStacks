@@ -95,13 +95,13 @@ export default function Login() {
             <Button type="submit">Signup</Button>
           </form>
           {/* OR Container */}
-          <div className="w-full flex items-center justify-center my-5">
+          {/* <div className="w-full flex items-center justify-center my-5">
             <div className="w-[214px] h-[1px] border-b border-[#272727]"></div>
             <span className="px-4">or</span>
             <div className="w-[214px] h-[1px] border-b border-[#272727]"></div>
-          </div>
+          </div> */}
           {/* Google OAuth Button */}
-          <Button className="flex gap-4 items-center bg-[#272727] mb-5">
+          {/* <Button className="flex gap-4 items-center bg-[#272727] mb-5">
             <img
               src="/google.svg"
               alt="JobStacks Logo"
@@ -109,9 +109,9 @@ export default function Login() {
               height={40}
             />
             Google
-          </Button>
+          </Button> */}
           {/* Don't Have an Account Container */}
-          <div className="w-full flex justify-center">
+          <div className="w-full flex justify-center mt-6">
             <span>Already Have An Account?</span>
             <span className="text-primary pl-2">Click Here</span>
           </div>
