@@ -36,7 +36,6 @@ export default function JobCards({ jobs, variant = "default", onStatusClick }: J
 
   function getTechIconUrl(name: string) {
     const normalized = name
-      .toLowerCase()
       .replace(/\+/g, "plus")
       .replace(/#/g, "sharp")
       .replace(/\s+/g, "");
