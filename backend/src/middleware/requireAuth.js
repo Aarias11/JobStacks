@@ -3,7 +3,9 @@ import User from '../models/User.js';
 
 const requireAuth = async (req, res, next) => {
   let token;
-  console.log("🔍 Incoming cookies:", req.cookies);
+
+  console.log("🔍 req.cookies:", req.cookies);
+  console.log("🔍 req.headers.cookie:", req.headers.cookie);
   console.log("🔍 Authorization header:", req.headers.authorization);
 
   const authHeader = req.headers.authorization;
@@ -14,11 +16,17 @@ const requireAuth = async (req, res, next) => {
 
   if (!token && req.cookies?.token) {
     token = req.cookies.token;
-    console.log('🔐 Token found in cookies');
+    console.log('🔐 Token found in req.cookies');
+  }
+
+  if (!token && req.headers.cookie?.includes("token=")) {
+    const rawCookie = req.headers.cookie.split('; ').find(row => row.startsWith('token='));
+    token = rawCookie?.split('=')[1];
+    console.log('🔐 Token extracted manually from req.headers.cookie');
   }
 
   if (!token) {
-    console.warn('❌ No token found in cookies or Authorization header');
+    console.warn('❌ No token found');
     return res.status(401).json({ error: 'Authorization token missing' });
   }
 
