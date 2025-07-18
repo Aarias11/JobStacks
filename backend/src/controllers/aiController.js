@@ -31,21 +31,26 @@ const runPythonParser = (url) => {
       if (code !== 0) {
         console.error('❌ Python exited with code:', code);
         console.error('📄 stderr:', stderr);
-        return reject(new Error(`Python script failed with exit code ${code}`));
+        return reject(new Error(`Python script failed with exit code ${code}. ${stderr}`));
       }
 
       try {
-        const parsed = JSON.parse(stdout);
+        // Try to extract JSON object from stdout
+        const jsonStart = stdout.indexOf('{');
+        const jsonEnd = stdout.lastIndexOf('}');
+        const cleanJson = stdout.slice(jsonStart, jsonEnd + 1);
+        const parsed = JSON.parse(cleanJson);
         resolve(parsed);
       } catch (err) {
-        console.error('❌ Failed to parse Python output:', stdout);
-        return reject(new Error('Invalid JSON returned from script.'));
+        console.error('❌ Failed to parse Python output as JSON:', stdout);
+        // Fallback: try to provide more details in the error
+        reject(new Error('Invalid JSON returned from script.'));
       }
     });
   });
 };
 
-export const parseJobFromUrl = async (req, res, next) => {
+export const parseJobFromUrl = async (req, res) => {
   try {
     const { url } = req.body;
     const userId = req.user._id;
@@ -75,7 +80,7 @@ export const parseJobFromUrl = async (req, res, next) => {
 
     res.status(201).json(application);
   } catch (err) {
-    console.error('Job parsing failed:', err);
-    next(err);
+    console.error('❌ Job parsing failed:', err.message);
+    res.status(500).json({ error: 'Job parsing failed', details: err.message });
   }
 };
