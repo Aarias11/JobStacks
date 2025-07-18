@@ -38,11 +38,7 @@ export default function DashboardView() {
     useEffect(() => {
   const fetchJobs = async () => {
     try {
-      const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applications`, {
-        headers: {
-          'Authorization': `Bearer ${token || ''}`,
-        },
         credentials: "include",
       });
       const data = await res.json();

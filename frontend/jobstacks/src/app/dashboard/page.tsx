@@ -18,11 +18,8 @@ export default function Dashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
         await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         });
       } catch (error) {
         router.push("/login"); // ⛔️ Not authenticated

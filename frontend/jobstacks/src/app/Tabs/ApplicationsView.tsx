@@ -21,19 +21,11 @@ export default function ApplicationsView() {
   const [jobs, setJobs] = useState<any[]>([]);
 
   
-  useEffect(() => {
+   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const token = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("token="))
-          ?.split("=")[1];
-
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applications`, {
           credentials: "include",
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
         });
         const data = await res.json();
         setJobs(Array.isArray(data.applications) ? data.applications : []);
@@ -42,7 +34,7 @@ export default function ApplicationsView() {
         console.error("Failed to fetch jobs:", err);
       }
     };
-
+  
     fetchJobs();
   }, []);
 
