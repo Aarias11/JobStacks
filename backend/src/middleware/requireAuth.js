@@ -2,15 +2,19 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 const requireAuth = async (req, res, next) => {
-  let token = null;
+  let token;
+  console.log("🔍 Incoming cookies:", req.cookies);
+  console.log("🔍 Authorization header:", req.headers.authorization);
 
-  // Prefer cookie token over Authorization header
-  if (req.cookies && req.cookies.token) {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+    console.log('🔐 Token found in Authorization header');
+  }
+
+  if (!token && req.cookies?.token) {
     token = req.cookies.token;
     console.log('🔐 Token found in cookies');
-  } else if (req.headers.authorization?.startsWith('Bearer ')) {
-    token = req.headers.authorization.split(' ')[1];
-    console.log('🔐 Token found in Authorization header');
   }
 
   if (!token) {
