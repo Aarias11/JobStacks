@@ -17,7 +17,10 @@ app.use(cors({
   origin: 'https://job-stacks.vercel.app',
   credentials: true
 }));
-app.options('*', cors());
+app.options('*', cors({
+  origin: 'https://job-stacks.vercel.app',
+  credentials: true
+}));
 app.use(cookieParser());
 
 // DB Connection
