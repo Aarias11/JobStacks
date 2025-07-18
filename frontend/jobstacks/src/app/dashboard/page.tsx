@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("Dashboard");
   const router = useRouter();
 
+  // Use Effect
   useEffect(() => {
     const checkAuth = async () => {
       try {
