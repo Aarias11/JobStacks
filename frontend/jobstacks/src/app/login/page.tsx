@@ -24,7 +24,12 @@ export default function Login() {
           email,
           password,
         },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       if (res.status === 200) {

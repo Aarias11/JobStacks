@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default function SettingsView() {
   const [name, setName] = useState('');
@@ -9,8 +10,11 @@ export default function SettingsView() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        const token = Cookies.get('token');
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
-          withCredentials: true,
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
         });
         setName(res.data.name);
         setEmail(res.data.email);
@@ -84,6 +88,7 @@ export default function SettingsView() {
         <button
           onClick={async () => {
             try {
+              const token = Cookies.get('token');
               await axios.put(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/users/me`,
                 {
@@ -91,7 +96,11 @@ export default function SettingsView() {
                   email,
                   ...(password && { password }),
                 },
-                { withCredentials: true }
+                {
+                  headers: {
+                    Authorization: token ? `Bearer ${token}` : '',
+                  },
+                }
               );
               alert('Changes saved successfully.');
               setPassword('');

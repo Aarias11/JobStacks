@@ -22,11 +22,19 @@ export default function ApplicationDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const getTokenFromCookie = () => {
+      const match = document.cookie.match(/(?:^|; )token=([^;]*)/);
+      return match ? decodeURIComponent(match[1]) : null;
+    };
+    const token = getTokenFromCookie();
     async function fetchJob() {
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/applications/${id}`,
           {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
             credentials: "include",
           }
         );
