@@ -25,7 +25,7 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/users/me", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
           credentials: "include",
         });
         if (res.ok) {

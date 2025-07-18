@@ -1,4 +1,6 @@
 "use client";
+"import dotenv from \"dotenv\";"
+"dotenv.config();"
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -17,7 +19,7 @@ export default function Dashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await axios.get("http://localhost:4000/api/users/me", {
+        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
           withCredentials: true,
         });
       } catch (error) {

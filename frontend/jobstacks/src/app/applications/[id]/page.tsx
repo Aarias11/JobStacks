@@ -25,7 +25,7 @@ export default function ApplicationDetailPage() {
     async function fetchJob() {
       try {
         const res = await fetch(
-          `http://localhost:4000/api/applications/${id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/applications/${id}`,
           {
             credentials: "include",
           }

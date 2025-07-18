@@ -24,7 +24,7 @@ export default function ApplicationsView() {
    useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/applications", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applications`, {
           credentials: "include",
         });
         const data = await res.json();

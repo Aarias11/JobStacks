@@ -18,7 +18,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:4000/api/users/register", {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/register`, {
         name,
         email,
         password,

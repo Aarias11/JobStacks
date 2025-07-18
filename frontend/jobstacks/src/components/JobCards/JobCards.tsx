@@ -65,7 +65,7 @@ export default function JobCards({ jobs, variant = "default", onStatusClick }: J
     );
 
     try {
-      await fetch(`http://localhost:4000/api/applications/${jobId}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applications/${jobId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

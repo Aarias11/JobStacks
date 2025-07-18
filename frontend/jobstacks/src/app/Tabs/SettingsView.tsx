@@ -9,7 +9,7 @@ export default function SettingsView() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await axios.get('http://localhost:4000/api/users/me', {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
           withCredentials: true,
         });
         setName(res.data.name);
@@ -85,7 +85,7 @@ export default function SettingsView() {
           onClick={async () => {
             try {
               await axios.put(
-                'http://localhost:4000/api/users/me',
+                `${process.env.NEXT_PUBLIC_API_URL}/api/users/me`,
                 {
                   name,
                   email,
