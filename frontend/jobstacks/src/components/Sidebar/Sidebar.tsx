@@ -31,6 +31,9 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
         if (res.ok) {
           const data = await res.json();
           setUser({ name: data.name, email: data.email });
+        } else {
+          const errorText = await res.text();
+          console.error("Failed to fetch user. Status:", res.status, "Response:", errorText);
         }
       } catch (error) {
         console.error("Failed to fetch user:", error);
