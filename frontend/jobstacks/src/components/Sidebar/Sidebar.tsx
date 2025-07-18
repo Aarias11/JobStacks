@@ -25,7 +25,7 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
+        const res = await fetch('/api/users/me', {
           credentials: "include",
         });
         if (res.ok) {
@@ -83,11 +83,19 @@ export default function Sidebar({ onTabSelect }: SidebarProps) {
               key={index}
               onClick={async () => {
                 if (tab.label === "Logout") {
-                  await fetch("/api/logout", {
-                    method: "POST",
-                    credentials: "include",
-                  });
-                  window.location.href = "/login";
+                  try {
+                    const res = await fetch("/api/users/logout", {
+                      method: "POST",
+                      credentials: "include",
+                    });
+                    if (res.ok) {
+                      window.location.href = "/login";
+                    } else {
+                      console.error("Logout failed:", await res.text());
+                    }
+                  } catch (err) {
+                    console.error("Logout error:", err);
+                  }
                 } else {
                   onTabSelect(tab.label);
                 }
