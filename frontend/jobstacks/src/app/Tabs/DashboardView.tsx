@@ -38,7 +38,7 @@ export default function DashboardView() {
     useEffect(() => {
   const fetchJobs = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applications`, {
+      const res = await fetch('/api/applications', {
         credentials: "include",
       });
       const data = await res.json();
@@ -57,7 +57,7 @@ export default function DashboardView() {
   setShowModal(false); // Close the modal immediately
   try {
     setLoading(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/ai/parse-job`, {
+    const res = await fetch('/api/ai/parse-job', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url: jobUrl }),

@@ -18,13 +18,15 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/register`, {
-        name,
-        email,
-        password,
-      },  
-      { withCredentials: true },
-    );
+      const res = await axios.post(
+        "/api/users/register",
+        {
+          name,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       if (res.status === 201) {
         // 🎉 Registration success

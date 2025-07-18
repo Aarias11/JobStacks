@@ -5,6 +5,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://jobstacks.alanarias.com/api/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

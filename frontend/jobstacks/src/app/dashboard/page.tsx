@@ -18,7 +18,7 @@ export default function Dashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
+        await axios.get('/api/users/me', {
           withCredentials: true,
         });
       } catch (error) {

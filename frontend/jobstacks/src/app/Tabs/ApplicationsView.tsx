@@ -21,10 +21,10 @@ export default function ApplicationsView() {
   const [jobs, setJobs] = useState<any[]>([]);
 
   
-   useEffect(() => {
+  useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applications`, {
+        const res = await fetch('/api/applications', {
           credentials: "include",
         });
         const data = await res.json();
@@ -34,7 +34,7 @@ export default function ApplicationsView() {
         console.error("Failed to fetch jobs:", err);
       }
     };
-  
+
     fetchJobs();
   }, []);
 
