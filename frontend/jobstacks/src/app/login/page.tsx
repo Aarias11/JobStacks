@@ -5,6 +5,7 @@ import React, { use } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -40,7 +41,7 @@ export default function Login() {
   return (
     <div className="w-full h-screen flex py-2 px-4">
       {/* Left Login Container */}
-      <div className=" w-full lg:w-[50%] h-full">
+      <div className=" w-full lg:w-[100%] h-full">
         <img
           src="/jobstacks_logo.svg"
           alt="JobStacks Logo"
@@ -110,14 +111,16 @@ export default function Login() {
           </Button> */}
           {/* Don't Have an Account Container */}
           <div className="w-full flex justify-center mt-6">
-            <span>Don't Have An Account? </span>
-            <span className="text-primary pl-2"> Click Here</span>
+            <span>Don't Have An Account?</span>
+            <Link href="/register" className="text-primary pl-2">
+              Click Here
+            </Link>
           </div>
         </section>
       </div>
 
       {/* Right Image Container */}
-      <div className="border hidden lg:flex lg:w-[50%] h-full bg-white rounded-2xl"></div>
+      {/* <div className="border hidden lg:flex lg:w-[50%] h-full bg-white rounded-2xl"></div> */}
     </div>
   );
 }
