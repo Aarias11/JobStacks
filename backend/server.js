@@ -15,6 +15,7 @@ app.use(express.json());
 const allowedOrigins = [
   'https://job-stacks.vercel.app'
 ];
+console.log('🚦 Allowed Origins:', allowedOrigins);
 
 app.use(cors({
   origin: function (origin, callback) {
